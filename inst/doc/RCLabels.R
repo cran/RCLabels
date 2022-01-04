@@ -43,8 +43,8 @@ switch_notation(my_label, from = my_notation, to = paren_notation)
 switch_notation(my_label, from = my_notation, to = paren_notation, flip = TRUE)
 
 ## -----------------------------------------------------------------------------
-keep_pref_suff(my_label, keep = "pref", notation = my_notation)
-keep_pref_suff(my_label, keep = "suff", notation = my_notation)
+get_pref_suff(my_label, which = "pref", notation = my_notation)
+get_pref_suff(my_label, which = "suff", notation = my_notation)
 
 ## -----------------------------------------------------------------------------
 labels <- c("a [of b in c]", "d [of e in f]", "g [of h in i]")
@@ -83,6 +83,18 @@ get_prepositions(labels, notation = bracket_notation)
 # Objects are named by the preposition of their phrase.
 get_objects(labels, notation = bracket_notation)
 
+# The get_piece() function is a convenience function
+# that extracts just what you want.
+get_piece(labels, piece = "noun", notation = bracket_notation)
+get_piece(labels, piece = "pref")
+get_piece(labels, piece = "suff")
+get_piece(labels, piece = "of")
+get_piece(labels, piece = "in")
+# An empty string is returned when the preposition is missing.
+get_piece(labels, piece = "bogus")
+
+## -----------------------------------------------------------------------------
+labels
 # Split the labels into pieces, named by "noun" and prepositions.
 split_labels <- split_labels(labels, 
                              prepositions = prepositions, 
