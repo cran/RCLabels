@@ -5,6 +5,7 @@ knitr::opts_chunk$set(
 )
 
 ## ----setup, include = FALSE---------------------------------------------------
+library(magrittr)
 library(RCLabels)
 
 ## -----------------------------------------------------------------------------
@@ -19,6 +20,7 @@ my_notation
 arrow_notation
 paren_notation
 bracket_notation
+first_dot_notation
 from_notation
 of_notation
 to_notation
@@ -56,7 +58,7 @@ split_pref_suff(labels, notation = bracket_notation)
 labels
 
 df <- tibble::tibble(labels = labels)
-result <- df |> 
+result <- df %>% 
   dplyr::mutate(
     split = split_pref_suff(labels, notation = bracket_notation, transpose = TRUE)
   )

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Matthew Kuperus Heun" />
 
-<meta name="date" content="2022-01-03" />
+<meta name="date" content="2022-03-05" />
 
 <title>RCLabels</title>
 
@@ -141,7 +141,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <h1 class="title toc-ignore">RCLabels</h1>
 <h4 class="author">Matthew Kuperus Heun</h4>
-<h4 class="date">2022-01-03</h4>
+<h4 class="date">2022-03-05</h4>
 
 
 
@@ -161,6 +161,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>“pref -&gt; suff” (separator “-&gt;”)</li>
 <li>“pref [suff]” (suffix delimited by “ [” and “]”)</li>
 <li>“(pref) (suff)” (prefix and suffix both surrounded by “(” and “)”)</li>
+<li>“pref.suff” (separator “.”)</li>
 </ul>
 <p>Prefixes are usually the “thing” of interest, e.g. an energy carrier (“Coal”) or a processing stage in an energy conversion chain (“Main activity producer electricity plants”). Suffixes are usually modifiers or metadata about the thing (the prefix). Suffixes can describe the destination of an energy carrier (“Light [-&gt; Industry in USA]”). Suffixes can describe the output of a processing stage (“Production [of Coal in ZAR]”).</p>
 </div>
@@ -188,18 +189,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>bracket_notation</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; pref_start   pref_end suff_start   suff_end </span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         &quot;&quot;       &quot; [&quot;       &quot; [&quot;        &quot;]&quot;</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>from_notation</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>first_dot_notation</span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; pref_start   pref_end suff_start   suff_end </span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         &quot;&quot;  &quot; [from &quot;  &quot; [from &quot;        &quot;]&quot;</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>of_notation</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         &quot;&quot;        &quot;.&quot;        &quot;.&quot;         &quot;&quot;</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>from_notation</span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; pref_start   pref_end suff_start   suff_end </span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         &quot;&quot;    &quot; [of &quot;    &quot; [of &quot;        &quot;]&quot;</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>to_notation</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         &quot;&quot;  &quot; [from &quot;  &quot; [from &quot;        &quot;]&quot;</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>of_notation</span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; pref_start   pref_end suff_start   suff_end </span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         &quot;&quot;    &quot; [to &quot;    &quot; [to &quot;        &quot;]&quot;</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>bracket_arrow_notation</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         &quot;&quot;    &quot; [of &quot;    &quot; [of &quot;        &quot;]&quot;</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>to_notation</span>
 <span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; pref_start   pref_end suff_start   suff_end </span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         &quot;&quot;    &quot; [-&gt; &quot;    &quot; [-&gt; &quot;        &quot;]&quot;</span></span></code></pre></div>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         &quot;&quot;    &quot; [to &quot;    &quot; [to &quot;        &quot;]&quot;</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>bracket_arrow_notation</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; pref_start   pref_end suff_start   suff_end </span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         &quot;&quot;    &quot; [-&gt; &quot;    &quot; [-&gt; &quot;        &quot;]&quot;</span></span></code></pre></div>
 <p>Note that identical <code>pref_end</code> and <code>suff_start</code> values (as shown in all notations above) are interpreted as a single delimiter throughout the <code>RCLables</code> package. Empty strings (<code>&quot;&quot;</code>) mean that no indication is given for the start or end of a prefix or suffix.</p>
 </div>
 <div id="creating-row-and-column-labels" class="section level3">
@@ -258,7 +262,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;a [of b in c]&quot; &quot;d [of e in f]&quot; &quot;g [of h in i]&quot;</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">labels =</span> labels)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">split =</span> <span class="fu">split_pref_suff</span>(labels, <span class="at">notation =</span> bracket_notation, <span class="at">transpose =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  )</span>
