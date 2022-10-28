@@ -1,42 +1,68 @@
-#' Extract nouns from labels
+#' Extract nouns from row and column labels
 #'
 #' Nouns are the first part of a row-column label,
 #' "a" in "a \[b\]".
-#' Internally, this function calls `get_pref_suff()`
-#' and asks for the prefix.
+#' Internally, this function calls `get_pref_suff(which = "pref")`.
 #'
 #' @param labels A list or vector of labels from which nouns are to be extracted.
+#' @param inf_notation A boolean that tells whether to infer notation for `x`.
+#'                     Default is `TRUE`.
+#'                     See `infer_notation()` for details.
 #' @param notation The notation type to be used when extracting nouns.
-#'                 Default is `RCLabels::bracket_notation`.
+#'                 Default is `RCLabels::notations_list`, meaning that
+#'                 the notation is inferred using `infer_notation()`.
+#' @param choose_most_specific A boolean that tells whether to choose the most specific
+#'                             notation from `notation` when inferring notation.
+#'                             Default is `TRUE`.
 #'
 #' @return A list of nouns from row and column labels.
 #'
 #' @export
 #'
 #' @examples
-#' get_nouns("a [b]", bracket_notation)
+#' get_nouns("a [b]", notation = bracket_notation)
 #' # Also works with vectors and lists.
 #' get_nouns(c("a [b]", "c [d]"))
 #' get_nouns(list("a [b]", "c [d]"))
-get_nouns <- function(labels, notation = RCLabels::bracket_notation) {
+get_nouns <- function(labels,
+                      inf_notation = TRUE,
+                      notation = RCLabels::notations_list,
+                      choose_most_specific = TRUE) {
   if (is.null(labels)) {
     return(NULL)
   }
-  get_pref_suff(labels, which = "pref", notation = notation) %>%
+  get_pref_suff(labels,
+                which = "pref",
+                inf_notation = inf_notation,
+                notation = notation,
+                choose_most_specific = choose_most_specific) %>%
     magrittr::set_names(rep("noun", length(labels)))
 }
 
 
 #' Extract prepositional phrases of row and column labels
 #'
-#' This function extracts the suffix of a row or column label as a
-#' single string.
+#' This function extracts prepositional phrases from suffixes of row and column labels
+#' of the form "a \[preposition b\]", where "preposition b" is the prepositional phrase.
 #'
-#' @param labels A list or vector of labels from which nouns are to be extracted.
-#' @param notation The notation type to be used when extracting nouns.
-#'                 Default is `RCLabels::bracket_notation`.
-#' @param prepositions A list of prepositions, used to detect prepositional phrases.
-#'                     Default is `RCLabels::prepositions`.
+#' @param labels A list or vector of labels from which prepositional phrases are to be extracted.
+#' @param inf_notation A boolean that tells whether to infer notation for `x`.
+#'                     Default is `TRUE`.
+#'                     See `infer_notation()` for details.
+#' @param notation The notation type to be used when extracting prepositional phrases.
+#'                 Default is `RCLabels::notations_list`, meaning that
+#'                 the notation is inferred using `infer_notation()`.
+#' @param choose_most_specific A boolean that tells whether to choose the most specific
+#'                             notation from `notation` when inferring notation.
+#'                             Default is `FALSE` so that a less specific notation can be
+#'                             inferred.
+#'                             In combination with `RCLabels::notations_list`,
+#'                             the default value of `FALSE` means that
+#'                             `RCLabels::bracket_notation` will be selected instead of
+#'                             anything more specific, such as
+#'                             `RCLabels::from_notation`.
+#' @param prepositions A list of prepositions for which to search.
+#'                     Default is `RCLabels::prepositions_list`.
 #'
 #' @return All prepositional phrases in a suffix.
 #'
@@ -46,12 +72,17 @@ get_nouns <- function(labels, notation = RCLabels::bracket_notation) {
 #' get_pps(c("a [in b]", "c [of d]"))
 #' get_pps(c("a [of b in c]", "d [-> e of f]"))
 get_pps <- function(labels,
-                    notation = RCLabels::bracket_notation,
-                    prepositions = RCLabels::prepositions) {
+                    inf_notation = TRUE,
+                    notation = RCLabels::notations_list,
+                    choose_most_specific = FALSE,
+                    prepositions = RCLabels::prepositions_list) {
   if (is.null(labels)) {
     return(NULL)
   }
-  suffixes <- get_pref_suff(labels, which = "suff", notation = notation)
+  suffixes <- get_pref_suff(labels, which = "suff",
+                            inf_notation = inf_notation,
+                            notation = notation,
+                            choose_most_specific = choose_most_specific)
   # Location prepositions
   preposition_words <- paste0(prepositions, " ")
   prep_patterns <- make_or_pattern(preposition_words,
@@ -77,12 +108,25 @@ get_pps <- function(labels,
 #' an inner structure of each prepositional phrase in the specific label.
 #'
 #' @param labels The row and column labels from which prepositional phrases are to be extracted.
-#' @param notation The notation object that describes the labels.
-#'                 Default is `RCLabels::bracket_notation`.
+#' @param inf_notation A boolean that tells whether to infer notation for `x`.
+#'                     Default is `TRUE`.
+#'                     See `infer_notation()` for details.
+#' @param notation The notation type to be used when extracting prepositions.
+#'                 Default is `RCLabels::notations_list`, meaning that
+#'                 the notation is inferred using `infer_notation()`.
+#' @param choose_most_specific A boolean that tells whether to choose the most specific
+#'                             notation from `notation` when inferring notation.
+#'                             Default is `FALSE` so that a less specific notation can be
+#'                             inferred.
+#'                             In combination with `RCLabels::notations_list`,
+#'                             the default value of `FALSE` means that
+#'                             `RCLabels::bracket_notation` will be selected instead of
+#'                             anything more specific, such as
+#'                             `RCLabels::from_notation`.
 #' @param prepositions A vector of strings to be treated as prepositions.
 #'                     Note that a space is appended to each word internally,
 #'                     so, e.g., "to" becomes "to ".
-#'                     Default is `RCLabels::prepositions`.
+#'                     Default is `RCLabels::prepositions_list`.
 #'
 #' @return A list of prepositions.
 #'
@@ -91,12 +135,18 @@ get_pps <- function(labels,
 #' @examples
 #' get_prepositions(c("a [of b into c]", "d [-> e of f]"))
 get_prepositions <- function(labels,
-                      notation = RCLabels::bracket_notation,
-                      prepositions = RCLabels::prepositions) {
+                             inf_notation = TRUE,
+                             notation = RCLabels::notations_list,
+                             choose_most_specific = FALSE,
+                             prepositions = RCLabels::prepositions_list) {
   if (is.null(labels)) {
     return(NULL)
   }
-  pps <- get_pref_suff(labels, which = "suff", notation = notation)
+  pps <- get_pref_suff(labels,
+                       which = "suff",
+                       inf_notation = inf_notation,
+                       notation = notation,
+                       choose_most_specific = choose_most_specific)
   preposition_words <- paste0(prepositions, " ")
   prep_patterns <- make_or_pattern(preposition_words,
                                    pattern_type = "anywhere")
@@ -134,12 +184,25 @@ get_prepositions <- function(labels,
 #' with that preposition.
 #'
 #' @param labels The row and column labels from which prepositional phrases are to be extracted.
-#' @param notation The notation object that describes the labels.
-#'                 Default is `RCLabels::bracket_notation`.
+#' @param inf_notation A boolean that tells whether to infer notation for `x`.
+#'                     Default is `TRUE`.
+#'                     See `infer_notation()` for details.
+#' @param notation The notation type to be used when extracting prepositions.
+#'                 Default is `RCLabels::notations_list`, meaning that
+#'                 the notation is inferred using `infer_notation()`.
+#' @param choose_most_specific A boolean that tells whether to choose the most specific
+#'                             notation from `notation` when inferring notation.
+#'                             Default is `FALSE` so that a less specific notation can be
+#'                             inferred.
+#'                             In combination with `RCLabels::notations_list`,
+#'                             the default value of `FALSE` means that
+#'                             `RCLabels::bracket_notation` will be selected instead of
+#'                             anything more specific, such as
+#'                             `RCLabels::from_notation`.
 #' @param prepositions A vector of strings to be treated as prepositions.
 #'                     Note that a space is appended to each word internally,
 #'                     so, e.g., "to" becomes "to ".
-#'                     Default is `RCLabels::prepositions`.
+#'                     Default is `RCLabels::prepositions_list`.
 #'
 #' @return A list of objects of prepositional phrases,
 #'         with names being prepositions, and values being objects.
@@ -149,12 +212,18 @@ get_prepositions <- function(labels,
 #' @examples
 #' get_objects(c("a [of b into c]", "d [of Coal from e -> f]"))
 get_objects <- function(labels,
-                        notation = RCLabels::bracket_notation,
-                        prepositions = RCLabels::prepositions) {
+                        inf_notation = TRUE,
+                        notation = RCLabels::notations_list,
+                        choose_most_specific = FALSE,
+                        prepositions = RCLabels::prepositions_list) {
   if (is.null(labels)) {
     return(NULL)
   }
-  pps <- get_pref_suff(labels, which = "suff", notation = notation)
+  pps <- get_pref_suff(labels,
+                       which = "suff",
+                       inf_notation = inf_notation,
+                       notation = notation,
+                       choose_most_specific = choose_most_specific)
   preposition_words <- paste0(prepositions, " ")
   prep_patterns <- make_or_pattern(preposition_words,
                                    pattern_type = "anywhere")
@@ -182,9 +251,12 @@ get_objects <- function(labels,
     return(out)
   })
 
-  prepositions <- get_prepositions(labels, notation = notation, prepositions = prepositions)
+  these_prepositions <- get_prepositions(labels,
+                                         inf_notation = inf_notation,
+                                         notation = notation,
+                                         prepositions = prepositions)
 
-  mapply(pps, obj_start_locations, obj_end_locations, prepositions,
+  mapply(pps, obj_start_locations, obj_end_locations, these_prepositions,
                     SIMPLIFY = FALSE, USE.NAMES = FALSE, FUN = function(this_pp, these_osls, these_oels, these_pps) {
     mapply(these_osls, these_oels, these_pps, FUN = function(osl, oel, these_preps) {
       substring(this_pp, first = osl, last = oel) %>%
@@ -206,38 +278,63 @@ get_objects <- function(labels,
 #' (with names being prepositions that precede the objects).
 #'
 #' Unlike `split_pref_suff()`, it does not make sense to have a `transpose`
-#' argument on `split_labels()`.
+#' argument on `split_noun_pp()`.
 #' Labels may not have the same structure,
 #' e.g., they may have different prepositions.
 #'
 #' @param labels The row and column labels from which prepositional phrases are to be extracted.
-#' @param notation The notation object that describes the labels.
-#'                 Default is `RCLabels::bracket_notation`.
+#' @param inf_notation A boolean that tells whether to infer notation for `x`.
+#'                     Default is `TRUE`.
+#'                     See `infer_notation()` for details.
+#' @param notation The notation type to be used when extracting prepositions.
+#'                 Default is `RCLabels::notations_list`, meaning that
+#'                 the notation is inferred using `infer_notation()`.
+#' @param choose_most_specific A boolean that tells whether to choose the most specific
+#'                             notation from `notation` when inferring notation.
+#'                             Default is `FALSE` so that a less specific notation can be
+#'                             inferred.
+#'                             In combination with `RCLabels::notations_list`,
+#'                             the default value of `FALSE` means that
+#'                             `RCLabels::bracket_notation` will be selected instead of
+#'                             anything more specific, such as
+#'                             `RCLabels::from_notation`.
 #' @param prepositions A vector of strings to be treated as prepositions.
 #'                     Note that a space is appended to each word internally,
 #'                     so, e.g., "to" becomes "to ".
-#'                     Default is `RCLabels::prepositions`.
+#'                     Default is `RCLabels::prepositions_list`.
 #'
 #' @return A list of lists with items named `noun` and `pp`.
 #'
 #' @export
 #'
 #' @examples
-#' split_labels(c("a [of b in c]", "d [of e into f]"),
-#'              notation = bracket_notation)
-split_labels <- function(labels,
-                         notation = RCLabels::bracket_notation,
-                         prepositions = RCLabels::prepositions) {
+#' # Specify the notation
+#' split_noun_pp(c("a [of b in c]", "d [of e into f]"),
+#'               notation = bracket_notation)
+#' # Infer the notation via default arguments
+#' split_noun_pp(c("a [of b in c]", "d [of e into f]"))
+split_noun_pp <- function(labels,
+                          inf_notation = TRUE,
+                          notation = RCLabels::notations_list,
+                          choose_most_specific = FALSE,
+                          prepositions = RCLabels::prepositions_list) {
   if (is.null(labels)) {
     return(NULL)
   }
-  nouns <- get_nouns(labels, notation = notation) %>%
+  nouns <- get_nouns(labels,
+                     inf_notation = inf_notation,
+                     notation = notation,
+                     choose_most_specific = choose_most_specific) %>%
     as.list() %>%
     unname() %>%
     lapply(FUN = function(this_noun) {
       magrittr::set_names(this_noun, "noun")
     })
-  objects <- get_objects(labels, notation = notation, prepositions = prepositions)
+  objects <- get_objects(labels,
+                         inf_notation = inf_notation,
+                         notation = notation,
+                         prepositions = prepositions,
+                         choose_most_specific = choose_most_specific)
 
   mapply(nouns, objects, SIMPLIFY = FALSE, FUN = function(noun, object) {
     c(noun, object)
@@ -248,11 +345,13 @@ split_labels <- function(labels,
 #' Recombine row and column labels
 #'
 #' This function recombines (unsplits) row or column labels that have
-#' been separated by `split_labels()`.
+#' been separated by `split_noun_pp()`.
 #'
-#' @param splt_labels A vector of split row or column labels, probably created by `split_labels()`.
+#' @param splt_labels A vector of split row or column labels, probably created by `split_noun_pp()`.
 #' @param notation The notation object that describes the labels.
 #'                 Default is `RCLabels::bracket_notation`.
+#' @param squish A boolean that tells whether to remove extra spaces in the output of `paste_*()` functions.
+#'               Default is `TRUE`.
 #'
 #' @return Recombined row and column labels.
 #'
@@ -261,19 +360,19 @@ split_labels <- function(labels,
 #' @examples
 #' labs <- c("a [of b in c]", "d [from Coal mines in USA]")
 #' labs
-#' split <- split_labels(labs)
+#' split <- split_noun_pp(labs)
 #' split
-#' paste_pieces(split)
+#' paste_noun_pp(split)
 #' # Also works in a data frame
 #' df <- tibble::tibble(labels = c("a [in b]", "c [of d into USA]",
 #'                                 "e [of f in g]", "h [-> i in j]"))
 #' recombined <- df %>%
 #'   dplyr::mutate(
-#'     splits = split_labels(labels),
-#'     recombined = paste_pieces(splits)
+#'     splits = split_noun_pp(labels),
+#'     recombined = paste_noun_pp(splits)
 #'   )
 #' all(recombined$labels == recombined$recombined)
-paste_pieces <- function(splt_labels, notation = RCLabels::bracket_notation) {
+paste_noun_pp <- function(splt_labels, notation = RCLabels::bracket_notation, squish = TRUE) {
   if (is.null(splt_labels)) {
     return(NULL)
   }
@@ -282,12 +381,10 @@ paste_pieces <- function(splt_labels, notation = RCLabels::bracket_notation) {
       this_label[["noun"]]
     })
   pps <- sapply(splt_labels, FUN = function(this_label) {
-    without_noun <- this_label %>%
-      as.list() %>%
-      purrr::list_modify("noun" = NULL)
+    without_noun <- this_label[setdiff(names(this_label), "noun")]
     paste0(names(without_noun), " ", without_noun, collapse = " ")
   })
-  paste_pref_suff(pref = nouns, suff = pps, notation = notation)
+  paste_pref_suff(pref = nouns, suff = pps, notation = notation, squish = squish)
 }
 
 
@@ -314,12 +411,25 @@ paste_pieces <- function(splt_labels, notation = RCLabels::bracket_notation) {
 #'
 #' @param labels The row and column labels from which prepositional phrases are to be extracted.
 #' @param piece The name of the item to return.
-#' @param notation The notation object that describes the labels.
-#'                 Default is `RCLabels::bracket_notation`.
+#' @param inf_notation A boolean that tells whether to infer notation for `x`.
+#'                     Default is `TRUE`.
+#'                     See `infer_notation()` for details.
+#' @param notation The notation type to be used when extracting prepositions.
+#'                 Default is `RCLabels::notations_list`, meaning that
+#'                 the notation is inferred using `infer_notation()`.
+#' @param choose_most_specific A boolean that tells whether to choose the most specific
+#'                             notation from `notation` when inferring notation.
+#'                             Default is `FALSE` so that a less specific notation can be
+#'                             inferred.
+#'                             In combination with `RCLabels::notations_list`,
+#'                             the default value of `FALSE` means that
+#'                             `RCLabels::bracket_notation` will be selected instead of
+#'                             anything more specific, such as
+#'                             `RCLabels::from_notation`.
 #' @param prepositions A vector of strings to be treated as prepositions.
 #'                     Note that a space is appended to each word internally,
 #'                     so, e.g., "to" becomes "to ".
-#'                     Default is `RCLabels::prepositions`.
+#'                     Default is `RCLabels::prepositions_list`.
 #'
 #' @return A `piece` of `labels`.
 #'
@@ -338,9 +448,11 @@ paste_pieces <- function(splt_labels, notation = RCLabels::bracket_notation) {
 #' get_piece(labs, piece = "of")
 #' get_piece(labs, piece = "to")
 get_piece <- function(labels,
-                piece = "all",
-                notation = RCLabels::bracket_notation,
-                prepositions = RCLabels::prepositions) {
+                      piece = "all",
+                      inf_notation = TRUE,
+                      notation = RCLabels::notations_list,
+                      choose_most_specific = FALSE,
+                      prepositions = RCLabels::prepositions_list) {
   if (is.null(labels)) {
     return(NULL)
   }
@@ -348,18 +460,18 @@ get_piece <- function(labels,
   if (piece == "all") {
     return(labels)
   } else if (piece == "pref" | piece == "suff") {
-    return(get_pref_suff(labels, which = piece, notation = notation))
+    return(get_pref_suff(labels, which = piece, inf_notation = inf_notation, notation = notation, choose_most_specific = choose_most_specific))
   } else if (piece == "noun") {
-    return(get_nouns(labels, notation = notation))
+    return(get_nouns(labels, notation = notation, inf_notation = inf_notation, choose_most_specific = choose_most_specific))
   } else if (piece == "pps") {
-    return(get_pps(labels, notation = notation))
+    return(get_pps(labels, notation = notation, inf_notation = inf_notation, choose_most_specific = choose_most_specific))
   } else if (piece == "prepositions") {
-    return(get_prepositions(labels, notation = notation, prepositions = prepositions))
+    return(get_prepositions(labels, notation = notation, inf_notation = inf_notation, choose_most_specific = choose_most_specific, prepositions = prepositions))
   } else if (piece == "objects") {
-    return(get_objects(labels, notation = notation, prepositions = prepositions))
+    return(get_objects(labels, notation = notation, inf_notation = inf_notation, choose_most_specific = choose_most_specific, prepositions = prepositions))
   }
-  # If we get here, assume we want the object of a preposition
-  out <- get_objects(labels, notation = notation, prepositions = prepositions)
+  # If we get here, assume we want the object of a particular preposition
+  out <- get_objects(labels, notation = notation, inf_notation = inf_notation, choose_most_specific = choose_most_specific, prepositions = prepositions)
   out <- lapply(out, FUN = function(pieces){
     theoneswewant <- pieces[names(pieces) == piece]
     if (length(theoneswewant) == 0) {
@@ -370,13 +482,3 @@ get_piece <- function(labels,
   out %>%
     magrittr::set_names(rep(NULL, length(labels)))
 }
-
-
-
-
-
-
-
-
-
-

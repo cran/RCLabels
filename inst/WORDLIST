@@ -3,11 +3,13 @@ CMD
 DOI
 ECC
 github
+Hadley
 https
 IEATools
 io
 lifecycle
 MatthewHeun
+magrittr
 notational
 olds
 ped
@@ -15,6 +17,9 @@ pps
 PSUT
 README
 Rmd
+shorn
 suff
 unsplits
+vectorized
+Wickham
 ZAR

@@ -67,7 +67,7 @@ result$split[[2]]
 result$split[[3]]
 
 ## -----------------------------------------------------------------------------
-prepositions
+prepositions_list
 
 ## -----------------------------------------------------------------------------
 labels
@@ -98,16 +98,16 @@ get_piece(labels, piece = "bogus")
 ## -----------------------------------------------------------------------------
 labels
 # Split the labels into pieces, named by "noun" and prepositions.
-split_labels <- split_labels(labels, 
-                             prepositions = prepositions, 
+split_labels <- split_noun_pp(labels, 
+                             prepositions = prepositions_list, 
                              notation = bracket_notation)
 split_labels
 
 # Recombine split labels.
-paste_pieces(split_labels, notation = bracket_notation)
+paste_noun_pp(split_labels, notation = bracket_notation)
 
 # Recombine with a new notation.
-paste_pieces(split_labels, notation = paren_notation)
+paste_noun_pp(split_labels, notation = paren_notation)
 
 ## -----------------------------------------------------------------------------
 labels
