@@ -1,10 +1,40 @@
 ---
-title: "Release notes for `RCLabels`"
+title: "Release notes for `RCLabels`" 
 output: html_document
 ---
 
+Cite all releases with doi [10.5281/zenodo.5819143](https://doi.org/10.5281/zenodo.5819143), 
+which always resolves to the latest release.
 
-# RCLabels 0.1.4 (2023-04-25) 
+
+# RCLabels 0.1.7 (2023-11-30)
+
+* Added code of conduct and contributing pages to documentation.
+* Fixed typos in README.Rmd
+* No new tests
+    * Still at 372 tests, all passing.
+    * Test coverage remains at 100%.
+
+
+# RCLabels 0.1.6 (2023-07-28) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8193819.svg)](https://doi.org/10.5281/zenodo.8193819)
+
+* This version not released to CRAN.
+* Changed the citation URL to point to Zenodo.
+* No new tests
+    * Still at 372 tests, all passing.
+    * Test coverage remains at 100%.
+
+
+# RCLabels 0.1.5 (2023-05-04) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7896903.svg)](https://doi.org/10.5281/zenodo.7896903)
+
+* Move to latest version of GitHub test coverage workflow.
+* This version not released to CRAN.
+* No new tests
+    * Still at 372 tests, all passing.
+    * Test coverage remains at 100%.
+
+
+# RCLabels 0.1.4 (2023-04-25) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7863791.svg)](https://doi.org/10.5281/zenodo.7863791)
 
 * Fixed a bug where a `list()` was returned when
   `character()` should have been returned
