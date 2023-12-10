@@ -1,7 +1,7 @@
-379d7377bc507c913936146ce0b7ee0d *DESCRIPTION
+5ee7b64c38fa67adcaf8d6d1cd1689e4 *DESCRIPTION
 3735ae11d7be3f4b05cbfe38fdcdac41 *LICENSE
 59c38561c6323c78ad3de805be83fc38 *NAMESPACE
-a1ce13d7a9801c08e7ce6ab6c31a6024 *NEWS.md
+15848eb18a9941911cc9bd5c9ecdade6 *NEWS.md
 0805b2ffd1075e9049ce75017b51ffe3 *R/data.R
 ec708de959c975fe22f5b9219ad71fd7 *R/extractors.R
 3f624a09708438e02df68517a8d1534c *R/notation.R
@@ -23,11 +23,11 @@ fbac66d7b32355f780c5f99fa727b025 *data/in_notation.rda
 ddd3a6cc1341c1803439f661c5ab9f90 *data/prepositions.rda
 f88eb6b69b620f9731f37daf2d48889b *data/prepositions_list.rda
 94ffb1f44d0e04ebcf37de4ccdfd29e3 *data/to_notation.rda
-bfc50074182c6f220b4391c725863e04 *inst/CITATION
-1d83bbc779264f01256025e39ff5e3ea *inst/WORDLIST
+f3ddab771e266e4a510d4323e3876bff *inst/CITATION
+664b81acdbc8181773630ae72e55d25a *inst/WORDLIST
 7b93dc1c8b24f9627b962a842bf7bf02 *inst/doc/RCLabels.R
 5e77d844358f0e18044204d2f45c85fc *inst/doc/RCLabels.Rmd
-10b3f5eb42cd233f0c9f10bdc4252383 *inst/doc/RCLabels.html
+92bc78b4150e74f9d4b4e761be433290 *inst/doc/RCLabels.html
 f142006677560f1ba29d16e569b3dfb2 *man/arrow_notation.Rd
 48a51304564168cf26ff1df53aafd4f9 *man/bracket_arrow_notation.Rd
 8913784c58821c39dc3e9b5ab95bc054 *man/bracket_notation.Rd
