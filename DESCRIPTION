@@ -1,7 +1,7 @@
 Package: RCLabels
 Title: Manipulate Matrix Row and Column Labels with Ease
-Version: 0.1.8
-Date: 2023-12-09
+Version: 0.1.9
+Date: 2023-12-20
 Authors@R: c(person(given = "Matthew",
                     family = "Heun", 
                     role = c("aut", "cre"),
@@ -23,8 +23,8 @@ VignetteBuilder: knitr
 Language: en-US
 URL: https://matthewheun.github.io/RCLabels/
 NeedsCompilation: no
-Packaged: 2023-12-10 01:17:48 UTC; mkh2
+Packaged: 2023-12-21 13:13:12 UTC; mkh2
 Author: Matthew Heun [aut, cre] (<https://orcid.org/0000-0002-7438-214X>)
 Maintainer: Matthew Heun <matthew.heun@me.com>
 Repository: CRAN
-Date/Publication: 2023-12-10 06:00:11 UTC
+Date/Publication: 2023-12-21 13:40:11 UTC
